@@ -3,29 +3,33 @@
 const express = require("express")
 const morgan = require("morgan")
 const bodyParser = require("body-parser")
+const userRoute = require("./routes/userRoute")
+const adminRoutes = require("./routes/adminRoutes")
+const connectdb = require("./config/dbconnect")
+
+
+
+//mongodb function call
+connectdb()
 
 //object
 const app = express()
 
-//middleware 
-app.use(express())
+//middleware
 app.use(express.json())
 app.use(morgan("dev"))
 app.use(bodyParser.urlencoded({extended:false}))
 
 
-//Server route
-app.get("/", (req, res)=>{
-    res.send("<h1>Welcome to server<h1/>")
-})
 
-app.post("/contact-form",(req, res)=>{
-    const {inputData} = req.body
-    res.json({
-        success: true,
-        message: `Welcome to ${inputData}`
-    })
-})
+//Route
+app.use("/api/v1/user", userRoute)
+app.use("/api/v1/admin", adminRoutes)
+
+
+
+
+
 
 
 //listen 
